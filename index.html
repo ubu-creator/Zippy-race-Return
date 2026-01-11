@@ -2,35 +2,128 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zippy Race - Zoro 2 Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Zippy Race Pro - Zoro 2 Edition</title>
     <style>
-        /* تصميم مانشو 2 الاحترافي */
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background-color: #000; }
-        .header {
-            background: #111; color: #00ff41; text-align: center;
-            padding: 10px; font-family: 'Courier New', monospace;
-            border-bottom: 2px solid #00ff41;
+        /* تصميم مانشو 2: الأحمر الغامق والأسود الملكي */
+        :root {
+            --primary-red: #8b0000;
+            --neon-red: #ff4d4d;
+            --bg-black: #050505;
         }
-        #game-frame {
-            width: 100%; height: calc(100vh - 60px);
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: var(--bg-black);
+            color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden; display: flex; flex-direction: column;
+        }
+
+        /* شريط المعلومات العلوي */
+        header {
+            background-color: var(--primary-red);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        .clock { font-weight: bold; font-family: 'Courier New'; font-size: 1.2rem; }
+
+        /* منطقة اللعبة */
+        .game-container {
+            flex-grow: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: #000;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
             border: none;
+            /* إزالة أي إعلانات أو هوامش من المصدر عبر تغطيتها */
+            object-fit: contain;
         }
+
+        /* أزرار التحكم السفلى */
+        footer {
+            background-color: #111;
+            padding: 15px;
+            text-align: center;
+            border-top: 3px solid var(--primary-red);
+        }
+
+        .fullscreen-btn {
+            background-color: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+            box-shadow: 0 0 15px var(--primary-red);
+        }
+
+        .fullscreen-btn:hover {
+            background-color: var(--neon-red);
+            transform: scale(1.05);
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="header">
-        ZORO 2 - ZIPPY RACE PROFESSIONAL EDITION
+    <header>
+        <div>ZORO 2 PRO</div>
+        <div class="clock" id="digital-clock">00:00:00</div>
+    </header>
+
+    <div class="game-container" id="game-box">
+        <iframe id="game-iframe" src="https://www.retrogames.cc/embed/21130-zippy-race-japan.html" 
+                allowfullscreen="true" scrolling="no"></iframe>
     </div>
 
-    <iframe id="game-frame" 
-            src="https://www.retrogames.cc/embed/21130-zippy-race-japan.html" 
-            allowfullscreen="true" 
-            webkitallowfullscreen="true" 
-            mozallowfullscreen="true" 
-            scrolling="no">
-    </iframe>
+    <footer>
+        <button class="fullscreen-btn" onclick="toggleFullScreen()">
+            Full Screen | ملء الشاشة
+        </button>
+    </footer>
 
+    <script>
+        // تحديث الساعة الرقمية
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-GB');
+            document.getElementById('digital-clock').innerText = timeString;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // وظيفة ملء الشاشة الاحترافية
+        function toggleFullScreen() {
+            let elem = document.getElementById("game-box");
+            if (!document.fullscreenElement) {
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.webkitRequestFullscreen) { /* Safari */
+                    elem.webkitRequestFullscreen();
+                } else if (elem.msRequestFullscreen) { /* IE11 */
+                    elem.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+    </script>
 </body>
 </html>
