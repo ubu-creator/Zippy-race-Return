@@ -1,29 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Zippy Race - TowMes©™ Professional</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
-        #game { width: 100vw; height: 100vh; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        #emulator { width: 100%; height: 100%; }
+        .loading-screen { position: absolute; color: gold; font-family: monospace; text-align: center; }
     </style>
 </head>
 <body>
 
-    <div id="game"></div>
+    <div class="loading-screen" id="status">CONNECTING TO ZIP FILE...</div>
+    <div id="emulator"></div>
 
     <script>
-        // إعدادات المحاكي للارتباط المباشر بملف الـ ZIP الخاص بك
-        EJS_player = '#game';
-        EJS_core = 'nes'; 
-        EJS_gameName = "Zippy Race";
-        EJS_color = '#FFD700';
-        EJS_startOnLoaded = true; // بدء التشغيل تلقائياً
-        EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+        // إعدادات المحاكي للارتباط المباشر والكامل بملف الـ ZIP الخاص بك
+        var EJS_player = '#emulator';
+        var EJS_core = 'nes'; // النواة اللازمة لتشغيل ملفات NES داخل الـ ZIP
+        var EJS_gameName = "Zippy Race (Japan)";
+        var EJS_color = '#FFD700';
+        var EJS_startOnLoaded = true; // تشغيل اللعبة فور تحميلها
+        var EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
         
-        // تأكد أن اسم الملف في GitHub هو تماماً: Zippy Race (Japan).zip
-        EJS_gameUrl = 'Zippy Race (Japan).zip'; 
+        // الرابط المباشر لملف الـ ZIP الذي رفعته أنت على GitHub
+        // تأكد أن الملف في نفس المجلد وبنفس الاسم تماماً
+        var EJS_gameUrl = 'Zippy Race (Japan).zip'; 
+
+        window.EJS_onGameStart = function() {
+            document.getElementById('status').style.display = 'none';
+        };
     </script>
     <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
 
