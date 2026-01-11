@@ -3,72 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Zippy Race - TowMes©™</title>
+    <title>Zippy Race - TowMes©™ Professional</title>
     <style>
-        body { margin: 0; padding: 0; background: #111; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
-        canvas { background: #147814; border: 2px solid #fff; max-width: 100%; max-height: 100%; touch-action: none; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #000; overflow: hidden; }
+        #game-container { width: 100vw; height: 100vh; }
+        .watermark { position: absolute; bottom: 10px; left: 10px; color: gold; font-family: Arial; font-size: 12px; z-index: 99; opacity: 0.7; }
     </style>
 </head>
 <body>
-    <canvas id="game"></canvas>
+
+    <div class="watermark">Developed by: TowMes©™</div>
+    <div id="game-container">
+        <div id="game"></div>
+    </div>
+
     <script>
-        const canvas = document.getElementById('game');
-        const ctx = canvas.getContext('2d');
-        canvas.width = 360; canvas.height = 640;
-
-        let player = { x: 160, y: 540, w: 30, h: 50 };
-        let enemies = [];
-        let score = 0;
-        let gameOver = false;
-
-        function update() {
-            if (gameOver) return;
-            score++;
-            if (Math.random() < 0.03) enemies.push({ x: 60 + Math.random() * 240, y: -60 });
-            enemies.forEach((e, i) => {
-                e.y += 6;
-                if (e.y > 640) enemies.splice(i, 1);
-                if (player.x < e.x + 35 && player.x + 30 > e.x && player.y < e.y + 50 && player.y + 50 > e.y) gameOver = true;
-            });
-        }
-
-        function draw() {
-            ctx.fillStyle = "#147814"; ctx.fillRect(0, 0, 360, 640); // Grass
-            ctx.fillStyle = "#333"; ctx.fillRect(50, 0, 260, 640); // Road
-            
-            // Road Lines
-            ctx.strokeStyle = "white"; ctx.setLineDash([20, 20]);
-            ctx.lineDashOffset = -score * 8; ctx.beginPath();
-            ctx.moveTo(180, 0); ctx.lineTo(180, 640); ctx.stroke();
-
-            // Player
-            ctx.fillStyle = "gold"; ctx.fillRect(player.x, player.y, player.w, player.h);
-
-            // Enemies
-            ctx.fillStyle = "red";
-            enemies.forEach(e => ctx.fillRect(e.x, e.y, 35, 55));
-
-            // Text
-            ctx.fillStyle = "white"; ctx.font = "20px Monospace";
-            ctx.fillText("Dist: " + score + "m", 15, 30);
-            ctx.fillStyle = "yellow"; ctx.fillText("TowMes©™", 15, 620);
-
-            if (gameOver) {
-                ctx.fillStyle = "rgba(0,0,0,0.7)"; ctx.fillRect(0,0,360,640);
-                ctx.fillStyle = "white"; ctx.fillText("CRASHED!", 130, 300);
-                ctx.fillText("Tap to Restart", 100, 340);
-            }
-        }
-
-        function loop() { update(); draw(); requestAnimationFrame(loop); }
-
-        canvas.addEventListener('touchstart', (e) => {
-            if (gameOver) { gameOver = false; score = 0; enemies = []; return; }
-            let t = e.touches[0].clientX - canvas.getBoundingClientRect().left;
-            player.x = (t < canvas.width / 2) ? Math.max(55, player.x - 30) : Math.min(275, player.x + 30);
-        });
-
-        loop();
+        EJS_player = '#game';
+        EJS_core = 'nes'; // نوع الجهاز الأصلي للعبة (Nintendo)
+        EJS_gameName = "Zippy Race";
+        EJS_color = '#FFD700';
+        EJS_startOnLoaded = true;
+        EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+        
+        // هنا يتم ربط ملف الـ ZIP الخاص بك تلقائياً
+        EJS_gameUrl = 'Zippy Race (Japan).zip'; 
     </script>
+    <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
+
 </body>
 </html>
