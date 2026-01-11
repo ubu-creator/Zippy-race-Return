@@ -3,75 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TowMes™© - Zippy Race Edition</title>
+    <title>TowMes™©</title>
     <style>
-        /* إعدادات مانشو 2: التصميم الملكي بالأحمر والأسود */
+        /* التزام كامل باللون الأحمر الغامق والأسود */
         :root {
-            --deep-red: #660000;
+            --dark-red: #4a0000;
             --bright-red: #ff0000;
-            --gold: #ffd700;
         }
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            background-color: #000; color: white;
-            font-family: 'Arial', sans-serif; overflow: hidden;
+            background-color: #000; overflow: hidden;
             display: flex; flex-direction: column;
+            font-family: sans-serif;
         }
 
-        /* شريط التاج العلوي باسمك الجديد */
+        /* شريط علوي يحتوي على الاسم والساعة */
         header {
-            background: linear-gradient(to bottom, var(--deep-red), #000);
-            padding: 15px 25px;
+            background-color: var(--dark-red);
+            color: white; padding: 10px;
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 2px solid var(--bright-red);
-            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+            border-bottom: 2px solid #000;
         }
 
-        .brand {
-            font-size: 1.8rem; font-weight: bold;
-            color: var(--bright-red); text-shadow: 2px 2px 5px #000;
-            letter-spacing: 2px;
-        }
+        .brand { font-weight: bold; font-size: 1.2rem; }
+        .clock { font-family: monospace; font-size: 1.1rem; }
 
-        .clock {
-            font-family: 'Courier New', monospace; font-size: 1.3rem;
-            color: #ccc; border: 1px solid var(--deep-red);
-            padding: 5px 15px; border-radius: 20px;
-        }
-
-        /* حاوية اللعبة المحسنة */
-        .game-wrapper {
-            flex-grow: 1; position: relative;
-            background: #000; display: flex;
-            justify-content: center; align-items: center;
+        /* منطقة اللعبة مجهزة لمقاس الهاتف والتابليت */
+        .game-area {
+            flex-grow: 1; position: relative; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
         }
 
         iframe {
             width: 100%; height: 100%; border: none;
-            /* خاصية الإخفاء التلقائي لأي حواف زائدة */
-            clip-path: inset(0% 0% 0% 0%); 
         }
 
-        /* منطقة زر التكبير الاحترافي */
-        .controls {
-            background-color: #0a0a0a; padding: 20px;
-            text-align: center; border-top: 1px solid #333;
+        /* زر PLAY NOW أحمر غامق مع تكبير تلقائي */
+        .play-btn {
+            position: absolute;
+            background-color: var(--dark-red);
+            color: white; border: 2px solid var(--bright-red);
+            padding: 15px 30px; font-weight: bold; cursor: pointer;
+            z-index: 10; font-size: 1.5rem;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
         }
 
-        .fullscreen-btn {
-            background: linear-gradient(45deg, var(--deep-red), var(--bright-red));
-            color: white; border: none;
-            padding: 15px 40px; font-size: 1.2rem;
-            font-weight: bold; cursor: pointer;
-            border-radius: 50px; text-transform: uppercase;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
-            transition: all 0.3s ease;
+        /* زر فول سكرين متحرك (إنجليزي/عربي) */
+        .fs-btn {
+            background-color: var(--dark-red);
+            color: white; border: 1px solid white;
+            padding: 10px; cursor: pointer;
+            font-size: 0.9rem; border-radius: 5px;
         }
 
-        .fullscreen-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px var(--bright-red);
+        footer {
+            background-color: #000; padding: 10px; text-align: center;
         }
     </style>
 </head>
@@ -79,39 +66,40 @@
 
     <header>
         <div class="brand">TowMes™©</div>
-        <div class="clock" id="clock">00:00:00</div>
+        <div id="digital-clock" class="clock">00:00:00</div>
     </header>
 
-    <div class="game-wrapper" id="fullscreen-area">
-        <iframe src="https://www.retrogames.cc/embed/21130-zippy-race-japan.html" 
-                allowfullscreen="true" scrolling="no"></iframe>
+    <div class="game-area" id="main-container">
+        <button id="play-btn" class="play-btn" onclick="startGame()">PLAY NOW</button>
+        
+        <iframe id="game-iframe" src="https://www.retrogames.cc/embed/21130-zippy-race-japan.html" 
+                allowfullscreen="true" scrolling="no" style="display:none;"></iframe>
     </div>
 
-    <div class="controls">
-        <button class="fullscreen-btn" onclick="openFull()">
-            FULL SCREEN | ملء الشاشة
-        </button>
-    </div>
+    <footer>
+        <button class="fs-btn" onclick="goFull()">FULL SCREEN | ملء الشاشة</button>
+    </footer>
 
     <script>
-        // تحديث الساعة الرقمية بدقة
-        function tick() {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleTimeString('en-GB');
+        // تحديث الساعة
+        function updateTime() {
+            document.getElementById('digital-clock').innerText = new Date().toLocaleTimeString('en-GB');
         }
-        setInterval(tick, 1000);
-        tick();
+        setInterval(updateTime, 1000);
+        updateTime();
 
-        // تفعيل ملء الشاشة لكل الأجهزة (هواتف وتابليت)
-        function openFull() {
-            let elem = document.getElementById("fullscreen-area");
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen();
-            } else if (elem.webkitRequestFullscreen) {
-                elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) {
-                elem.msRequestFullscreen();
-            }
+        // تشغيل اللعبة عند ضغط PLAY NOW
+        function startGame() {
+            document.getElementById('play-btn').style.display = 'none';
+            document.getElementById('game-iframe').style.display = 'block';
+        }
+
+        // وظيفة ملء الشاشة
+        function goFull() {
+            let elem = document.getElementById("main-container");
+            if (elem.requestFullscreen) { elem.requestFullscreen(); }
+            else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
+            else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
         }
     </script>
 </body>
