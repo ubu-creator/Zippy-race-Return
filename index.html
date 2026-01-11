@@ -3,84 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TowMes™© Professional System</title>
+    <title>TowMes™© UI</title>
     <style>
-        /* التزام كامل بالهوية البصرية: أحمر غامق وأسود */
         :root {
             --dark-red: #8b0000;
-            --blood-red: #4a0000;
             --glow-red: #ff0000;
         }
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             background-color: #000; overflow: hidden;
-            display: flex; flex-direction: column;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: sans-serif;
         }
 
-        /* الساعة واسمك في الأعلى بتصميم زجاجي */
-        header {
-            position: fixed; top: 0; width: 100%; z-index: 100;
-            background: rgba(74, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-            color: white; padding: 8px 15px;
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid var(--glow-red);
-            box-sizing: border-box;
+        /* الساعة الشفافة في الزاوية */
+        #digital-clock {
+            position: fixed; top: 10px; left: 10px; z-index: 9999;
+            color: rgba(255, 0, 0, 0.6); /* حمراء شفافة */
+            font-family: monospace; font-size: 16px; font-weight: bold;
+            pointer-events: none; /* لا تعيق اللمس */
+            text-shadow: 1px 1px 2px #000;
         }
 
-        .brand { font-weight: bold; font-size: 1.1rem; letter-spacing: 1px; color: #fff; text-shadow: 0 0 10px var(--glow-red); }
-        .clock { font-family: 'Courier New', monospace; font-size: 1.1rem; color: #ff0000; font-weight: bold; }
+        /* الواترمارك الشفاف وسط الشاشة */
+        .watermark {
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9998;
+            color: rgba(255, 255, 255, 0.15); /* شفاف جداً */
+            font-size: 2rem; font-weight: bold;
+            pointer-events: none;
+            user-select: none;
+            white-space: nowrap;
+        }
 
-        /* منطقة اللعبة */
         .game-area {
-            flex-grow: 1; position: relative; width: 100%; height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            background: #000;
+            width: 100%; height: 100%; position: relative;
         }
 
         iframe { width: 100%; height: 100%; border: none; }
 
-        /* زر PLAY NOW */
         .play-btn {
-            position: absolute; z-index: 50;
-            background: linear-gradient(145deg, var(--dark-red), var(--blood-red));
-            color: white; border: 2px solid var(--glow-red);
-            padding: 20px 40px; font-weight: bold; cursor: pointer;
-            font-size: 1.8rem; border-radius: 10px;
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
-            transition: 0.3s;
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10001;
+            background: var(--dark-red); color: white;
+            border: 2px solid var(--glow-red); padding: 15px 30px;
+            font-weight: bold; cursor: pointer; font-size: 1.2rem;
+            border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
-        .play-btn:active { transform: scale(0.9); }
 
-        /* زر فول سكرين العائم والمتحرك باللمس */
+        /* زر فول سكرين مصغر وعائم */
         #fs-float-btn {
-            position: fixed; bottom: 80px; right: 20px; z-index: 9999;
-            width: 85px; height: 85px;
-            background: rgba(139, 0, 0, 0.9);
-            color: white; border: 2px solid white;
+            position: fixed; bottom: 20px; right: 20px; z-index: 10000;
+            width: 60px; height: 60px; /* تم تصغير الحجم */
+            background: rgba(139, 0, 0, 0.5); /* زيادة الشفافية */
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%; cursor: move;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            font-size: 10px; font-weight: bold; text-align: center;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+            font-size: 8px; font-weight: bold; text-align: center;
             touch-action: none; user-select: none;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="brand">TowMes™©</div>
-        <div id="digital-clock" class="clock">00:00:00</div>
-    </header>
+    <div id="digital-clock">00:00:00</div>
+    <div class="watermark">TowMes™©</div>
 
     <div class="game-area" id="main-container">
         <button id="play-btn" class="play-btn" onclick="startGame()">PLAY NOW</button>
@@ -89,14 +79,13 @@
                 allowfullscreen="true" scrolling="no" style="display:none;"></iframe>
 
         <div id="fs-float-btn">
-            <span>FULL<br>SCREEN</span>
-            <div style="width:70%; height:1px; background:rgba(255,255,255,0.4); margin:4px 0;"></div>
-            <span>تَكْبِيرُ<br>الشَّاشَةِ</span>
+            <span>FULL</span>
+            <div style="width:60%; height:1px; background:rgba(255,255,255,0.2); margin:2px 0;"></div>
+            <span>تَكْبِير</span>
         </div>
     </div>
 
     <script>
-        // تحديث الساعة بدقة
         function updateTime() {
             const now = new Date();
             document.getElementById('digital-clock').innerText = now.toLocaleTimeString('en-GB', { hour12: false });
@@ -104,13 +93,11 @@
         setInterval(updateTime, 1000);
         updateTime();
 
-        // تشغيل اللعبة
         function startGame() {
             document.getElementById('play-btn').style.display = 'none';
             document.getElementById('game-iframe').style.display = 'block';
         }
 
-        // منطق سحب وتحريك الزر العائم
         const fsBtn = document.getElementById('fs-float-btn');
         let isDragging = false;
         let startX, startY;
@@ -126,30 +113,22 @@
             let x = e.touches[0].clientX - startX;
             let y = e.touches[0].clientY - startY;
             
-            // منع خروج الزر عن الشاشة
-            x = Math.max(0, Math.min(x, window.innerWidth - 85));
-            y = Math.max(0, Math.min(y, window.innerHeight - 85));
+            x = Math.max(0, Math.min(x, window.innerWidth - 60));
+            y = Math.max(0, Math.min(y, window.innerHeight - 60));
             
             fsBtn.style.left = x + 'px';
             fsBtn.style.top = y + 'px';
-            fsBtn.style.right = 'auto'; // إلغاء الـ right الافتراضي
         });
 
         fsBtn.addEventListener('touchend', (e) => {
             if (!isDragging) {
-                toggleFullScreen();
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen();
+                } else {
+                    document.exitFullscreen();
+                }
             }
         });
-
-        function toggleFullScreen() {
-            let elem = document.documentElement;
-            if (!document.fullscreenElement) {
-                if (elem.requestFullscreen) elem.requestFullscreen();
-                else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
-            } else {
-                if (document.exitFullscreen) document.exitFullscreen();
-            }
-        }
     </script>
 </body>
 </html>
