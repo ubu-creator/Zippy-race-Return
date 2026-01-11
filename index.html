@@ -3,125 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Zippy Race Pro - Zoro 2 Edition</title>
+    <title>TowMes™© - Zippy Race Edition</title>
     <style>
-        /* تصميم مانشو 2: الأحمر الغامق والأسود الملكي */
+        /* إعدادات مانشو 2: التصميم الملكي بالأحمر والأسود */
         :root {
-            --primary-red: #8b0000;
-            --neon-red: #ff4d4d;
-            --bg-black: #050505;
+            --deep-red: #660000;
+            --bright-red: #ff0000;
+            --gold: #ffd700;
         }
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            background-color: var(--bg-black);
-            color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden; display: flex; flex-direction: column;
+            background-color: #000; color: white;
+            font-family: 'Arial', sans-serif; overflow: hidden;
+            display: flex; flex-direction: column;
         }
 
-        /* شريط المعلومات العلوي */
+        /* شريط التاج العلوي باسمك الجديد */
         header {
-            background-color: var(--primary-red);
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            z-index: 10;
+            background: linear-gradient(to bottom, var(--deep-red), #000);
+            padding: 15px 25px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid var(--bright-red);
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
         }
 
-        .clock { font-weight: bold; font-family: 'Courier New'; font-size: 1.2rem; }
+        .brand {
+            font-size: 1.8rem; font-weight: bold;
+            color: var(--bright-red); text-shadow: 2px 2px 5px #000;
+            letter-spacing: 2px;
+        }
 
-        /* منطقة اللعبة */
-        .game-container {
-            flex-grow: 1;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            background: #000;
+        .clock {
+            font-family: 'Courier New', monospace; font-size: 1.3rem;
+            color: #ccc; border: 1px solid var(--deep-red);
+            padding: 5px 15px; border-radius: 20px;
+        }
+
+        /* حاوية اللعبة المحسنة */
+        .game-wrapper {
+            flex-grow: 1; position: relative;
+            background: #000; display: flex;
+            justify-content: center; align-items: center;
         }
 
         iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            /* إزالة أي إعلانات أو هوامش من المصدر عبر تغطيتها */
-            object-fit: contain;
+            width: 100%; height: 100%; border: none;
+            /* خاصية الإخفاء التلقائي لأي حواف زائدة */
+            clip-path: inset(0% 0% 0% 0%); 
         }
 
-        /* أزرار التحكم السفلى */
-        footer {
-            background-color: #111;
-            padding: 15px;
-            text-align: center;
-            border-top: 3px solid var(--primary-red);
+        /* منطقة زر التكبير الاحترافي */
+        .controls {
+            background-color: #0a0a0a; padding: 20px;
+            text-align: center; border-top: 1px solid #333;
         }
 
         .fullscreen-btn {
-            background-color: var(--primary-red);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: 0.3s;
-            box-shadow: 0 0 15px var(--primary-red);
+            background: linear-gradient(45deg, var(--deep-red), var(--bright-red));
+            color: white; border: none;
+            padding: 15px 40px; font-size: 1.2rem;
+            font-weight: bold; cursor: pointer;
+            border-radius: 50px; text-transform: uppercase;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+            transition: all 0.3s ease;
         }
 
         .fullscreen-btn:hover {
-            background-color: var(--neon-red);
-            transform: scale(1.05);
+            transform: scale(1.1);
+            box-shadow: 0 0 30px var(--bright-red);
         }
-
     </style>
 </head>
 <body>
 
     <header>
-        <div>ZORO 2 PRO</div>
-        <div class="clock" id="digital-clock">00:00:00</div>
+        <div class="brand">TowMes™©</div>
+        <div class="clock" id="clock">00:00:00</div>
     </header>
 
-    <div class="game-container" id="game-box">
-        <iframe id="game-iframe" src="https://www.retrogames.cc/embed/21130-zippy-race-japan.html" 
+    <div class="game-wrapper" id="fullscreen-area">
+        <iframe src="https://www.retrogames.cc/embed/21130-zippy-race-japan.html" 
                 allowfullscreen="true" scrolling="no"></iframe>
     </div>
 
-    <footer>
-        <button class="fullscreen-btn" onclick="toggleFullScreen()">
-            Full Screen | ملء الشاشة
+    <div class="controls">
+        <button class="fullscreen-btn" onclick="openFull()">
+            FULL SCREEN | ملء الشاشة
         </button>
-    </footer>
+    </div>
 
     <script>
-        // تحديث الساعة الرقمية
-        function updateClock() {
+        // تحديث الساعة الرقمية بدقة
+        function tick() {
             const now = new Date();
-            const timeString = now.toLocaleTimeString('en-GB');
-            document.getElementById('digital-clock').innerText = timeString;
+            document.getElementById('clock').innerText = now.toLocaleTimeString('en-GB');
         }
-        setInterval(updateClock, 1000);
-        updateClock();
+        setInterval(tick, 1000);
+        tick();
 
-        // وظيفة ملء الشاشة الاحترافية
-        function toggleFullScreen() {
-            let elem = document.getElementById("game-box");
-            if (!document.fullscreenElement) {
-                if (elem.requestFullscreen) {
-                    elem.requestFullscreen();
-                } else if (elem.webkitRequestFullscreen) { /* Safari */
-                    elem.webkitRequestFullscreen();
-                } else if (elem.msRequestFullscreen) { /* IE11 */
-                    elem.msRequestFullscreen();
-                }
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
+        // تفعيل ملء الشاشة لكل الأجهزة (هواتف وتابليت)
+        function openFull() {
+            let elem = document.getElementById("fullscreen-area");
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
             }
         }
     </script>
