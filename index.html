@@ -1,82 +1,36 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zippy Race Professional - Zoro 2 Edition</title>
+    <title>Zippy Race - Zoro 2 Pro</title>
     <style>
-        body {
-            background: radial-gradient(circle, #1a1a1a 0%, #000000 100%);
-            color: #00ff41;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            font-family: 'Courier New', Courier, monospace;
+        /* تصميم مانشو 2 الاحترافي */
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background-color: #000; }
+        .header {
+            background: #111; color: #00ff41; text-align: center;
+            padding: 10px; font-family: 'Courier New', monospace;
+            border-bottom: 2px solid #00ff41;
         }
-        #game-wrapper {
-            position: relative;
-            width: 800px;
-            height: 600px;
-            border: 10px double #00ff41;
-            box-shadow: 0 0 50px rgba(0, 255, 65, 0.3);
-            background-color: #000;
+        #game-frame {
+            width: 100%; height: calc(100vh - 60px);
+            border: none;
         }
-        #ejs-container {
-            width: 100%;
-            height: 100%;
-        }
-        .ui-panel {
-            margin-top: 15px;
-            text-align: center;
-            border-top: 2px solid #333;
-            padding-top: 10px;
-        }
-        .status-light {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            background-color: #00ff41;
-            border-radius: 50%;
-            animation: blink 1s infinite;
-        }
-        @keyframes blink { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
 
-    <div style="margin-bottom: 20px;">
-        <h2 style="text-shadow: 2px 2px #ff0000;">ZIPPY RACE [OFFICIAL EMULATOR]</h2>
-        <p>المطور المستضيف: <span style="color: #fff;">Zoro 2</span> | المحلل الاستراتيجي: <span style="color: #fff;">Manchu 2</span></p>
+    <div class="header">
+        ZORO 2 - ZIPPY RACE PROFESSIONAL EDITION
     </div>
 
-    <div id="game-wrapper">
-        <div id="ejs-container"></div>
-    </div>
-
-    <div class="ui-panel">
-        <p><span class="status-light"></span> النظام يعمل بكفاءة متوازنة (60 FPS)</p>
-        <small>تحكم بواسطة الأسهم ولوحة المفاتيح (X للتشغيل، Z للفرامل)</small>
-    </div>
-
-    <script>
-        window.EJS_player = '#ejs-container';
-        // تأكد أن ملف الـ ZIP المرفوع يحمل هذا الاسم تماماً
-        window.EJS_gameUrl = 'Zippy Race (Japan).zip'; 
-        window.EJS_core = 'sega_sg_1000'; // النواة المخصصة لقراءة الملفات المرفقة
-        window.EJS_pathtodata = 'https://cdn.jsdelivr.net/gh/EmulatorJS/EmulatorJS@latest/data/';
-        window.EJS_startOnLoaded = true;
-        window.EJS_language = 'en-US';
-        
-        // توازن إحصائي للأداء
-        window.EJS_DEBUG_XX = false; 
-        window.EJS_mouse = false;
-        window.EJS_multitap = false;
-    </script>
-    
-    <script src="https://cdn.jsdelivr.net/gh/EmulatorJS/EmulatorJS@latest/data/loader.js"></script>
+    <iframe id="game-frame" 
+            src="https://www.retrogames.cc/embed/21130-zippy-race-japan.html" 
+            allowfullscreen="true" 
+            webkitallowfullscreen="true" 
+            mozallowfullscreen="true" 
+            scrolling="no">
+    </iframe>
 
 </body>
 </html>
