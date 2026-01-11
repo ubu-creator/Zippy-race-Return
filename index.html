@@ -1,36 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Zippy Race - TowMes©™ Professional</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        #emulator { width: 100%; height: 100%; }
-        .loading-screen { position: absolute; color: gold; font-family: monospace; text-align: center; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
+        #emulator-container { width: 100vw; height: 100vh; position: relative; }
+        .towmes-label { position: absolute; bottom: 5px; left: 5px; color: gold; font-family: Arial; font-size: 10px; z-index: 100; opacity: 0.6; }
     </style>
 </head>
 <body>
 
-    <div class="loading-screen" id="status">CONNECTING TO ZIP FILE...</div>
-    <div id="emulator"></div>
+    <div class="towmes-label">Powered by TowMes©™</div>
+    <div id="emulator-container">
+        <div id="game"></div>
+    </div>
 
     <script>
-        // إعدادات المحاكي للارتباط المباشر والكامل بملف الـ ZIP الخاص بك
-        var EJS_player = '#emulator';
-        var EJS_core = 'nes'; // النواة اللازمة لتشغيل ملفات NES داخل الـ ZIP
-        var EJS_gameName = "Zippy Race (Japan)";
-        var EJS_color = '#FFD700';
-        var EJS_startOnLoaded = true; // تشغيل اللعبة فور تحميلها
-        var EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+        // إعدادات المحاكي للربط المباشر بملف الـ ZIP الذي رفعته
+        EJS_player = '#game';
+        EJS_core = 'nes'; // اللعبة تعمل بنظام نينتندو القديم
+        EJS_gameName = "Zippy Race (Japan)";
+        EJS_color = '#FFD700';
+        EJS_startOnLoaded = true; // بدء اللعبة فوراً
+        EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
         
-        // الرابط المباشر لملف الـ ZIP الذي رفعته أنت على GitHub
-        // تأكد أن الملف في نفس المجلد وبنفس الاسم تماماً
-        var EJS_gameUrl = 'Zippy Race (Japan).zip'; 
-
-        window.EJS_onGameStart = function() {
-            document.getElementById('status').style.display = 'none';
-        };
+        // ربط الكود بملف الـ ZIP الخاص بك
+        EJS_gameUrl = 'Zippy Race (Japan).zip'; 
     </script>
     <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
 
