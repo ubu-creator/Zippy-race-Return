@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Zippy Race - TowMes©™</title>
+    <style>
+        body { margin: 0; background: #222; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif; }
+        canvas { background: #147814; border: 4px solid #fff; box-shadow: 0 0 20px rgba(0,0,0,0.5); touch-action: none; }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 360; canvas.height = 600;
+
+        let player = { x: 160, y: 500, w: 35, h: 60 };
+        let enemies = [];
+        let score = 0;
+        let speed = 5;
+        let gameOver = false;
+
+        function draw() {
+            if (gameOver) {
+                ctx.fillStyle = "white"; ctx.font = "30px Arial";
+                ctx.fillText("GAME OVER", 90, 300);
+                ctx.font = "20px Arial"; ctx.fillText("Tap to Restart", 120, 340);
+                return;
+            }
+
+            // Road
+            ctx.fillStyle = "#147814"; ctx.fillRect(0,0,360,600);
+            ctx.fillStyle = "#2d2d2d"; ctx.fillRect(50,0,260,600);
+            
+            // Road Lines
+            ctx.strokeStyle = "white"; ctx.setLineDash([20, 20]);
+            ctx.lineDashOffset = -score * 5; ctx.beginPath();
+            ctx.moveTo(180, 0); ctx.lineTo(180, 600); ctx.stroke();
+
+            // Player (Gold)
+            ctx.fillStyle = "#FFD700"; ctx.fillRect(player.x, player.y, player.w, player.h);
+
+            // Enemies (Red)
+            ctx.fillStyle = "#C80000";
+            enemies.forEach((e, i) => {
+                e.y += speed;
+                ctx.fillRect(e.x, e.y, 40, 65);
+                if (e.y > 600) enemies.splice(i, 1);
+                // Collision
+                if (player.x < e.x + 40 && player.x + 35 > e.x && player.y < e.y + 65 && player.y + 60 > e.y) gameOver = true;
+            });
+
+            if (Math.random() < 0.02) enemies.push({ x: 60 + Math.random() * 200, y: -70 });
+
+            // UI
+            score++; ctx.fillStyle = "white"; ctx.font = "18px Courier";
+            ctx.fillText("Dist: " + score + "m", 10, 30);
+            ctx.fillStyle = "yellow"; ctx.fillText("By: TowMes©™", 10, 580);
+
+            requestAnimationFrame(draw);
+        }
+
+        canvas.addEventListener('touchstart', (e) => {
+            if (gameOver) { gameOver = false; score = 0; enemies = []; draw(); return; }
+            let touchX = e.touches[0].clientX - canvas.offsetLeft;
+            if (touchX < player.x) player.x -= 20; else player.x += 20;
+            player.x = Math.max(55, Math.min(player.x, 270));
+        });
+
+        draw();
+    </script>
+</body>
+</html>
